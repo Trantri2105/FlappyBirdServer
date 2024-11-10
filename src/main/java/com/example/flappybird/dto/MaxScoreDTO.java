@@ -4,6 +4,6 @@ import java.util.Date;
 
 public interface MaxScoreDTO {
     int getMaxScore();
-    String getUserName();
+    Integer getUserId();
     Date getCreatedAt();
 }

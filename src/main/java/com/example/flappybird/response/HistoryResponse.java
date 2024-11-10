@@ -7,9 +7,9 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class ScoreResponse {
+public class HistoryResponse {
     private int userId;
-    private String username;
     private int score;
+    private String username;
     private Date createdAt;
 }

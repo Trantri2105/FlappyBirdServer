@@ -9,8 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ScoreRepository extends JpaRepository<Score, Integer> {
-    @Query("SELECT MAX(s.score) as maxScore, MAX(s.createdAt) as createdAt, u.username as userName FROM Score s JOIN User u ON s.userId = u.id GROUP BY s.userId ORDER BY maxScore desc")
+    @Query("SELECT MAX(s.score) as maxScore, MAX(s.createdAt) as createdAt, u.id as userId FROM Score s JOIN User u ON s.userId = u.id GROUP BY s.userId ORDER BY maxScore desc")
     List<MaxScoreDTO> findTopScores(Pageable pageable);
 
     List<Score> findScoresByUserId(Integer userId, Pageable pageable);
+
+    @Query("SELECT u.username FROM User u WHERE u.id = :userId")
+    String findUsernameByUserId(Integer userId);
 }

@@ -2,6 +2,7 @@ package com.example.flappybird.controller;
 
 import com.example.flappybird.model.Score;
 import com.example.flappybird.repository.ScoreRepository;
+import com.example.flappybird.response.HistoryResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,8 @@ public class ScoreController {
         return new ResponseEntity<>("Saved score", HttpStatus.OK);
     }
 
-    @GetMapping("score/history")
-    public ResponseEntity<List<Score>> getScoreHistory(@RequestParam Integer userId) {
+    @GetMapping("/score/history")
+    public ResponseEntity<List<HistoryResponse>> getScoreHistory(@RequestParam Integer userId) {
         if (userId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -44,6 +45,13 @@ public class ScoreController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        String username = scoreRepository.findUsernameByUserId(userId);
+        List<HistoryResponse> responses = res.stream().map(history -> new HistoryResponse(
+                history.getUserId(),
+                history.getScore(),
+                username,
+                history.getCreatedAt()
+        )).toList();
+        return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 }

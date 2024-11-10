@@ -35,7 +35,8 @@ public class RankingController {
 
         // Chuyển đổi kết quả thành danh sách `ScoreResponse`
         List<ScoreResponse> scoreResponses = topScores.stream().map(score -> new ScoreResponse(
-                score.getUserName(),
+                score.getUserId(),
+                scoreRepository.findUsernameByUserId(score.getUserId()),
                 score.getMaxScore(),
                 score.getCreatedAt()
         )).collect(Collectors.toList());
