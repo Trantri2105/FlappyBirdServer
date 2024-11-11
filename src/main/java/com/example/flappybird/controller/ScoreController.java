@@ -40,7 +40,7 @@ public class ScoreController {
         }
         List<Score> res;
         try {
-            res = scoreRepository.findScoresByUserId(userId, Pageable.ofSize(6));
+            res = scoreRepository.findTop6ScoresByUserId(userId, Pageable.ofSize(6));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
